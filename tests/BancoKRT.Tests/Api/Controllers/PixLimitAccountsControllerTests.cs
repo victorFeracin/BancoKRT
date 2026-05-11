@@ -21,7 +21,7 @@ public class PixLimitAccountsControllerTests
     }
 
     [Fact]
-    public async Task CreateAsync_ShouldReturnCreatedAtAction_WhenServiceSucceeds()
+    public async Task CreateAsync_ShouldReturnCreatedAtRoute_WhenServiceSucceeds()
     {
         var request = new CreatePixLimitAccountRequest
         {
@@ -52,10 +52,10 @@ public class PixLimitAccountsControllerTests
 
         var result = await _controller.CreateAsync(request, CancellationToken.None);
 
-        var createdAtActionResult = result.Result.Should().BeOfType<CreatedAtActionResult>().Subject;
-        createdAtActionResult.ActionName.Should().Be(nameof(PixLimitAccountsController.GetByAccountAsync));
-        createdAtActionResult.StatusCode.Should().Be(StatusCodes.Status201Created);
-        createdAtActionResult.Value.Should().Be(response);
+        var createdAtRouteResult = result.Result.Should().BeOfType<CreatedAtRouteResult>().Subject;
+        createdAtRouteResult.RouteName.Should().Be(nameof(PixLimitAccountsController.GetByAccountAsync));
+        createdAtRouteResult.StatusCode.Should().Be(StatusCodes.Status201Created);
+        createdAtRouteResult.Value.Should().Be(response);
     }
 
     [Fact]

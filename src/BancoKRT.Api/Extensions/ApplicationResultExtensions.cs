@@ -29,15 +29,15 @@ public static class ApplicationResultExtensions
         return controller.ToErrorResult(result.Error!);
     }
 
-    public static ActionResult<T> ToCreatedAtActionResult<T>(
+    public static ActionResult<T> ToCreatedAtRouteResult<T>(
         this ControllerBase controller,
         ApplicationResult<T> result,
-        string actionName,
+        string routeName,
         object routeValues)
     {
         if (result.IsSuccess)
         {
-            return controller.CreatedAtAction(actionName, routeValues, result.Value);
+            return controller.CreatedAtRoute(routeName, routeValues, result.Value);
         }
 
         return controller.ToErrorResult(result.Error!);
@@ -74,7 +74,7 @@ public static class ApplicationResultExtensions
             ApplicationErrorType.Validation => "Erro de validação",
             ApplicationErrorType.Conflict => "Conflito de recurso",
             ApplicationErrorType.NotFound => "Recurso não encontrado",
-            ApplicationErrorType.BusinessRule => "Regra de negócio violada",
+            ApplicationErrorType.BusinessRule => "Ação não permitida",
             _ => "Erro na aplicação"
         };
     }

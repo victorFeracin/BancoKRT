@@ -12,7 +12,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
     {
-        var problemDetails = new ValidationProblemDetails(context.ModelState)
+        var problemDetails = new ProblemDetails
         {
             Title = "Erro de validação",
             Detail = "A requisição contém dados inválidos.",

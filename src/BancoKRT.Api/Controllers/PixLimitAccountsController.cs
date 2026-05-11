@@ -11,6 +11,8 @@ namespace BancoKRT.Api.Controllers;
 [Produces("application/json")]
 public sealed class PixLimitAccountsController(IPixLimitAccountService pixLimitAccountService) : ControllerBase
 {
+    private const string GetByAccountRouteName = nameof(GetByAccountAsync);
+
     [HttpPost]
     [ProducesResponseType(typeof(PixLimitAccountResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -28,18 +30,18 @@ public sealed class PixLimitAccountsController(IPixLimitAccountService pixLimitA
                 request.TransactionLimit),
             cancellationToken);
 
-        return this.ToCreatedAtActionResult(
+        return this.ToCreatedAtRouteResult(
             result,
-            nameof(GetByAccountAsync),
+            GetByAccountRouteName,
             new
             {
-                cpf = request.Cpf,
-                agencyNumber = request.AgencyNumber,
-                accountNumber = request.AccountNumber
+                cpf = result.Value?.Cpf ?? request.Cpf,
+                agencyNumber = result.Value?.AgencyNumber ?? request.AgencyNumber,
+                accountNumber = result.Value?.AccountNumber ?? request.AccountNumber
             });
     }
 
-    [HttpGet("{cpf}/{agencyNumber}/{accountNumber}")]
+    [HttpGet("{cpf}/{agencyNumber}/{accountNumber}", Name = GetByAccountRouteName)]
     [ProducesResponseType(typeof(PixLimitAccountResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

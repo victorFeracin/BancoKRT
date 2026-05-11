@@ -68,9 +68,7 @@ namespace BancoKRT.Infrastructure.Repositories
                 ProjectionExpression = "PK"
             }, cancellationToken);
 
-            // Itens com soft delete continuam existindo fisicamente para preservar histórico
-            // e evitar recriação implícita do mesmo agregado por sobrescrita.
-            return response.Item.Count > 0;
+            return response.Item is { Count: > 0 };
         }
 
         public async Task UpdateAsync(PixLimitAccount account, CancellationToken cancellationToken = default)

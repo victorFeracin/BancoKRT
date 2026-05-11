@@ -15,7 +15,7 @@ public class ApplicationResultExtensionsTests
     [InlineData(ApplicationErrorType.Validation, StatusCodes.Status400BadRequest, "Erro de validação")]
     [InlineData(ApplicationErrorType.Conflict, StatusCodes.Status409Conflict, "Conflito de recurso")]
     [InlineData(ApplicationErrorType.NotFound, StatusCodes.Status404NotFound, "Recurso não encontrado")]
-    [InlineData(ApplicationErrorType.BusinessRule, StatusCodes.Status422UnprocessableEntity, "Regra de negócio violada")]
+    [InlineData(ApplicationErrorType.BusinessRule, StatusCodes.Status422UnprocessableEntity, "Ação não permitida")]
     public void ToActionResult_ShouldMapFailureToExpectedHttpStatus(
         ApplicationErrorType errorType,
         int expectedStatusCode,
@@ -54,19 +54,19 @@ public class ApplicationResultExtensionsTests
     }
 
     [Fact]
-    public void ToCreatedAtActionResult_ShouldReturnCreatedAtAction_WhenResultSucceeds()
+    public void ToCreatedAtRouteResult_ShouldReturnCreatedAtRoute_WhenResultSucceeds()
     {
         var dto = new PixLimitAccountResponseDto("52998224725", "0001", "12345-6", 500m, DateTime.UtcNow, false, null);
 
-        var actionResult = _controller.ToCreatedAtActionResult(
+        var actionResult = _controller.ToCreatedAtRouteResult(
             ApplicationResult<PixLimitAccountResponseDto>.Success(dto),
             "GetByAccountAsync",
             new { cpf = dto.Cpf, agencyNumber = dto.AgencyNumber, accountNumber = dto.AccountNumber });
 
-        var createdAtActionResult = actionResult.Result.Should().BeOfType<CreatedAtActionResult>().Subject;
-        createdAtActionResult.ActionName.Should().Be("GetByAccountAsync");
-        createdAtActionResult.StatusCode.Should().Be(StatusCodes.Status201Created);
-        createdAtActionResult.Value.Should().Be(dto);
+        var createdAtRouteResult = actionResult.Result.Should().BeOfType<CreatedAtRouteResult>().Subject;
+        createdAtRouteResult.RouteName.Should().Be("GetByAccountAsync");
+        createdAtRouteResult.StatusCode.Should().Be(StatusCodes.Status201Created);
+        createdAtRouteResult.Value.Should().Be(dto);
     }
 
     private sealed class TestController : ControllerBase;

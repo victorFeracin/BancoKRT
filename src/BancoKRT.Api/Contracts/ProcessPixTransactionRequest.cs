@@ -13,6 +13,6 @@ public sealed class ProcessPixTransactionRequest
     [Required(ErrorMessage = "A conta é obrigatória.")]
     public string AccountNumber { get; init; } = string.Empty;
 
-    [Range(typeof(decimal), "0.01", "79228162514264337593543950335", ErrorMessage = "O valor da transação deve ser maior que zero.")]
+    [Range(typeof(decimal), "0.01", "999999999999999", ParseLimitsInInvariantCulture = true, ErrorMessage = "O valor da transação deve ser maior que zero.")]
     public decimal Amount { get; init; }
 }
