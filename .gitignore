@@ -38,6 +38,7 @@ ScaffoldingReadMe.txt
 
 # dotenv environment variables file
 .env
+/.docker/
 
 # Others
 ~$*
@@ -46,6 +47,7 @@ CodeCoverage/
 
 # MSBuild Binary and Structured Log
 *.binlog
+*.log
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -55,3 +57,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Visual Studio
+/.vs
+*.user
+*.suo
