@@ -10,5 +10,9 @@
     <ProjectReference Include="..\BancoKRT.Domain\BancoKRT.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.18.1" />
+  </ItemGroup>
+
 
 </Project>
