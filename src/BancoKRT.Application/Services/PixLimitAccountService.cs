@@ -244,7 +244,7 @@ namespace BancoKRT.Application.Services
             {
                 return ApplicationResult<PixLimitAccount>.Failure(
                     ApplicationErrorType.NotFound,
-                    "Conta com limite PIX não encontrada.");
+                    "Conta não encontrada.");
             }
 
             return ApplicationResult<PixLimitAccount>.Success(account);

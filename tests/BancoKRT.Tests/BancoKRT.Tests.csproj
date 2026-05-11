@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\BancoKRT.Domain\BancoKRT.Domain.csproj" />
     <ProjectReference Include="..\..\src\BancoKRT.Application\BancoKRT.Application.csproj" />
+    <ProjectReference Include="..\..\src\BancoKRT.Api\BancoKRT.Api.csproj" />
   </ItemGroup>
 
     <ItemGroup>

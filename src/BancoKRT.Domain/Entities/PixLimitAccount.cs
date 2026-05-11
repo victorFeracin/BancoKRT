@@ -43,6 +43,49 @@ namespace BancoKRT.Domain.Entities
                 new PixLimitAccount(cpf, agencyNumber, accountNumber, transactionLimit));
         }
 
+        public static DomainResult<PixLimitAccount> Rehydrate(
+            Cpf cpf,
+            string agencyNumber,
+            string accountNumber,
+            decimal transactionLimit,
+            DateTime createdAt,
+            bool isDeleted,
+            DateTime? deletedAt)
+        {
+            var createResult = Create(cpf, agencyNumber, accountNumber, transactionLimit);
+
+            if (createResult.IsFailure)
+            {
+                return createResult;
+            }
+
+            if (createdAt == default)
+            {
+                return DomainResult<PixLimitAccount>.Failure(
+                    DomainErrorType.Validation,
+                    "A data de criação é obrigatória para reidratação.");
+            }
+
+            if (isDeleted && deletedAt is null)
+            {
+                return DomainResult<PixLimitAccount>.Failure(
+                    DomainErrorType.Validation,
+                    "A data de exclusão é obrigatória para registros removidos.");
+            }
+
+            if (!isDeleted && deletedAt is not null)
+            {
+                return DomainResult<PixLimitAccount>.Failure(
+                    DomainErrorType.Validation,
+                    "Registros ativos não podem possuir data de exclusão.");
+            }
+
+            var account = createResult.Value!;
+            account.RestoreState(createdAt, isDeleted, deletedAt);
+
+            return DomainResult<PixLimitAccount>.Success(account);
+        }
+
         public DomainResult<bool> HasSufficientLimit(decimal amount)
         {
             var activeValidation = EnsureEntityIsActive();

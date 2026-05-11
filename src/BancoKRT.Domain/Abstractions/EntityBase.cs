@@ -15,6 +15,13 @@ namespace BancoKRT.Domain.Abstractions
             CreatedAt = DateTime.UtcNow;
         }
 
+        protected void RestoreState(DateTime createdAt, bool isDeleted, DateTime? deletedAt)
+        {
+            CreatedAt = createdAt;
+            IsDeleted = isDeleted;
+            DeletedAt = deletedAt;
+        }
+
         public DomainResult Delete()
         {
             if (IsDeleted)

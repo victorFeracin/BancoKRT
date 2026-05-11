@@ -25,6 +25,44 @@ public class PixLimitAccountTests
     }
 
     [Fact]
+    public void Rehydrate_ShouldRestorePersistedState_WhenDataIsValid()
+    {
+        var createdAt = new DateTime(2026, 05, 10, 12, 00, 00, DateTimeKind.Utc);
+        var deletedAt = new DateTime(2026, 05, 11, 15, 30, 00, DateTimeKind.Utc);
+
+        var result = PixLimitAccount.Rehydrate(
+            CreateValidCpf(),
+            "0001",
+            "12345-6",
+            500m,
+            createdAt,
+            true,
+            deletedAt);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value!.CreatedAt.Should().Be(createdAt);
+        result.Value.IsDeleted.Should().BeTrue();
+        result.Value.DeletedAt.Should().Be(deletedAt);
+    }
+
+    [Fact]
+    public void Rehydrate_ShouldFail_WhenDeletedRecordHasNoDeletedAt()
+    {
+        var result = PixLimitAccount.Rehydrate(
+            CreateValidCpf(),
+            "0001",
+            "12345-6",
+            500m,
+            new DateTime(2026, 05, 10, 12, 00, 00, DateTimeKind.Utc),
+            true,
+            null);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error!.Type.Should().Be(DomainErrorType.Validation);
+    }
+
+    [Fact]
     public void Create_ShouldFail_WhenCpfIsNull()
     {
         var result = PixLimitAccount.Create(null!, "0001", "12345-6", 500m);
