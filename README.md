@@ -50,7 +50,7 @@ Importante:
 
 ### 1. Clonar o repositório
 
-```powershell
+```
 git clone https://github.com/victorFeracin/BancoKRT.git
 cd BancoKRT
 ```
